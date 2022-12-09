@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alan344.uid.baidu.worker.dao.WorkerNodeDAO">
+    <resultMap id="workerNodeRes"
+               type="com.alan344.uid.baidu.worker.entity.WorkerNodeEntity">
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="HOST_NAME" jdbcType="VARCHAR" property="hostName"/>
+        <result column="PORT" jdbcType="VARCHAR" property="port"/>
+        <result column="TYPE" jdbcType="INTEGER" property="type"/>
+        <result column="GLOBAL_TOKEN" jdbcType="VARCHAR" property="globalToken"/>
+        <result column="LAUNCH_DATE" jdbcType="DATE" property="launchDate"/>
+        <result column="MODIFIED" jdbcType="TIMESTAMP" property="modified"/>
+        <result column="CREATED" jdbcType="TIMESTAMP" property="created"/>
+    </resultMap>
+
+    <insert id="addWorkerNode" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.alan344.uid.baidu.worker.entity.WorkerNodeEntity">
+        INSERT INTO WORKER_NODE
+        (WORK_ID,
+         HOST_NAME,
+         PORT,
+         TYPE,
+         GLOBAL_TOKEN,
+         LAUNCH_DATE,
+         MODIFIED,
+         CREATED)
+        VALUES (#{workId},
+                #{hostName},
+                #{port},
+                #{type},
+                #{globalToken}
+                    #{launchDate},
+                NOW(),
+                NOW())
+    </insert>
+
+    <select id="getWorkerNodeByGlobalToken" resultMap="workerNodeRes">
+        SELECT ID,
+               WORK_ID,
+               HOST_NAME,
+               PORT,
+               TYPE,
+               LAUNCH_DATE,
+               MODIFIED,
+               CREATED
+        FROM WORKER_NODE
+        WHERE GLOBAL_TOKEN = #{globalToken}
+    </select>
+
+    <update id="updateWorkId" parameterType="com.alan344.uid.baidu.worker.entity.WorkerNodeEntity">
+        UPDATE WORKER_NODE
+        SET WORK_ID = #{workId}
+        WHERE ID = #{id}
+    </update>
+</mapper>
