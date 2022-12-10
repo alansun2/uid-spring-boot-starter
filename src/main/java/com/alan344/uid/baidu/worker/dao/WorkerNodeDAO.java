@@ -17,6 +17,14 @@ public interface WorkerNodeDAO {
      */
     WorkerNodeEntity getWorkerNodeByGlobalToken(@Param("globalToken") String globalToken);
 
+
+    /**
+     * Get {@link WorkerNodeEntity} by Host
+     *
+     * @return
+     */
+    WorkerNodeEntity getWorkerNodeByHost(@Param("hostName") String hostName);
+
     /**
      * Add {@link WorkerNodeEntity}
      *

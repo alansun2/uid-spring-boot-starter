@@ -5,10 +5,10 @@ import com.alan344.uid.baidu.utils.DockerUtils;
 import com.alan344.uid.baidu.utils.NetUtils;
 import com.alan344.uid.baidu.worker.dao.WorkerNodeDAO;
 import com.alan344.uid.baidu.worker.entity.WorkerNodeEntity;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -26,6 +26,8 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
     private WorkerNodeDAO workerNodeDAO;
     @Resource
     private UidProperties uidProperties;
+    @Resource
+    private Environment env;
 
     /**
      * Assign worker id base on database.<p>
@@ -43,21 +45,43 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
     }
 
     private WorkerNodeEntity getWorkerNodeEntity() {
-        WorkerNodeEntity workerNodeByGlobalToken = null;
+        WorkerNodeEntity workerNodeEntity = this.buildWorkerNode();
         if (StringUtils.isNotBlank(uidProperties.getGlobalToken())) {
-            workerNodeByGlobalToken = workerNodeDAO.getWorkerNodeByGlobalToken(uidProperties.getGlobalToken());
-        }
-        final WorkerNodeEntity workerNodeEntity = this.buildWorkerNode();
-        if (null != workerNodeByGlobalToken) {
-            workerNodeEntity.setWorkId(workerNodeByGlobalToken.getWorkId());
-        }
-        workerNodeDAO.addWorkerNode(workerNodeEntity);
+            WorkerNodeEntity workerNodeByGlobalToken = workerNodeDAO.getWorkerNodeByGlobalToken(uidProperties.getGlobalToken());
+            if (null != workerNodeByGlobalToken) {
+                workerNodeEntity = workerNodeByGlobalToken;
 
-        if (null == workerNodeByGlobalToken) {
-            workerNodeEntity.setWorkId(workerNodeEntity.getWorkId());
+            } else {
+                workerNodeEntity.setGlobalToken(uidProperties.getGlobalToken());
+                this.saveWorkerNode(workerNodeEntity);
+            }
+        } else {
+            final WorkerNodeEntity workerNodeByHost = workerNodeDAO.getWorkerNodeByHost(workerNodeEntity.getHostName());
+            if (null != workerNodeByHost) {
+                workerNodeEntity = workerNodeByHost;
+
+            } else {
+                this.saveWorkerNode(workerNodeEntity);
+            }
+        }
+
+        this.addPrefixToWorkId(workerNodeEntity);
+        return workerNodeEntity;
+    }
+
+    private void saveWorkerNode(WorkerNodeEntity workerNodeEntity) {
+        workerNodeDAO.addWorkerNode(workerNodeEntity);
+        workerNodeEntity.setWorkId(workerNodeEntity.getWorkId());
+        workerNodeDAO.updateWorkId(workerNodeEntity);
+    }
+
+    private void addPrefixToWorkId(WorkerNodeEntity workerNodeEntity) {
+        final Integer workIdPrefix = uidProperties.getWorkIdPrefix();
+        if (null != workIdPrefix) {
+            final long workId = workerNodeEntity.getWorkId();
+            workerNodeEntity.setWorkId(Long.parseLong(workIdPrefix.toString() + workId));
             workerNodeDAO.updateWorkId(workerNodeEntity);
         }
-        return workerNodeEntity;
     }
 
     /**
@@ -70,12 +94,12 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
         if (DockerUtils.isDocker()) {
             workerNodeEntity.setType(WorkerNodeType.CONTAINER.value());
             workerNodeEntity.setHostName(DockerUtils.getDockerHost());
-            workerNodeEntity.setPort(DockerUtils.getDockerPort());
+            workerNodeEntity.setPort(env.getProperty("server.port"));
 
         } else {
             workerNodeEntity.setType(WorkerNodeType.ACTUAL.value());
             workerNodeEntity.setHostName(NetUtils.getLocalAddress());
-            workerNodeEntity.setPort(System.currentTimeMillis() + "-" + RandomUtils.nextInt(0, 100000));
+            workerNodeEntity.setPort(env.getProperty("server.port"));
         }
 
         return workerNodeEntity;
