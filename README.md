@@ -7,4 +7,4 @@
 ## 新特性
 
 1. 新增 GLOBAL_TOKEN, token 相同的应用返回相同的 workId
-2. 支持给 workId 添加前缀
+2. 支持给 workId 加前缀
