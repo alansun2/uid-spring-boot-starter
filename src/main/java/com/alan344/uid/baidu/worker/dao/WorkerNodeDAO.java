@@ -19,11 +19,11 @@ public interface WorkerNodeDAO {
 
 
     /**
-     * Get {@link WorkerNodeEntity} by Host
+     * Get {@link WorkerNodeEntity} by Host Port
      *
      * @return
      */
-    WorkerNodeEntity getWorkerNodeByHost(@Param("hostName") String hostName);
+    WorkerNodeEntity getWorkerNodeByHostAndPort(@Param("hostName") String hostName, @Param("port") String port);
 
     /**
      * Add {@link WorkerNodeEntity}

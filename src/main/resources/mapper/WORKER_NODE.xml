@@ -48,7 +48,7 @@
         WHERE GLOBAL_TOKEN = #{globalToken}
     </select>
 
-    <select id="getWorkerNodeByHost" resultMap="workerNodeRes">
+    <select id="getWorkerNodeByHostAndPort" resultMap="workerNodeRes">
         SELECT ID,
                WORK_ID,
                HOST_NAME,
@@ -59,6 +59,7 @@
                CREATED
         FROM WORKER_NODE
         WHERE HOST_NAME = #{hostName}
+          AND PORT = #{port}
     </select>
 
     <update id="updateWorkId" parameterType="com.alan344.uid.baidu.worker.entity.WorkerNodeEntity">

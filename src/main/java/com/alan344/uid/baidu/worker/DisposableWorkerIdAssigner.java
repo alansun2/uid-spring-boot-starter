@@ -56,7 +56,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
                 this.saveWorkerNode(workerNodeEntity);
             }
         } else {
-            final WorkerNodeEntity workerNodeByHost = workerNodeDAO.getWorkerNodeByHost(workerNodeEntity.getHostName());
+            final WorkerNodeEntity workerNodeByHost = workerNodeDAO.getWorkerNodeByHostAndPort(workerNodeEntity.getHostName(), workerNodeEntity.getPort());
             if (null != workerNodeByHost) {
                 workerNodeEntity = workerNodeByHost;
 
