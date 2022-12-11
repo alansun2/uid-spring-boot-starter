@@ -19,6 +19,10 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
 
+/**
+ * @author AlanSun
+ * @date 2022/12/11 19:43
+ **/
 @MapperScan(basePackages = "com.alan344.uid.baidu.worker.dao")
 @ConditionalOnProperty(prefix = "uid", name = "enable-uid-gen", matchIfMissing = true)
 @EnableConfigurationProperties(UidProperties.class)

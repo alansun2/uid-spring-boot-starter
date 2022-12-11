@@ -39,7 +39,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
     @Transactional(rollbackFor = Exception.class)
     public long assignWorkerId() {
         final WorkerNodeEntity workerNodeEntity = this.getWorkerNodeEntity();
-        LOGGER.info("Add worker node:" + workerNodeEntity);
+        LOGGER.info("worker node:" + workerNodeEntity);
 
         return workerNodeEntity.getWorkId();
     }
@@ -65,14 +65,15 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
             }
         }
 
-        this.addPrefixToWorkId(workerNodeEntity);
         return workerNodeEntity;
     }
 
     private void saveWorkerNode(WorkerNodeEntity workerNodeEntity) {
         workerNodeDAO.addWorkerNode(workerNodeEntity);
-        workerNodeEntity.setWorkId(workerNodeEntity.getWorkId());
+        workerNodeEntity.setWorkId(workerNodeEntity.getId());
         workerNodeDAO.updateWorkId(workerNodeEntity);
+
+        this.addPrefixToWorkId(workerNodeEntity);
     }
 
     private void addPrefixToWorkId(WorkerNodeEntity workerNodeEntity) {

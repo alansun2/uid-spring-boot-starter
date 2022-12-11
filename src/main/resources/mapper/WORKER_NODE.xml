@@ -4,6 +4,7 @@
     <resultMap id="workerNodeRes"
                type="com.alan344.uid.baidu.worker.entity.WorkerNodeEntity">
         <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="WORK_ID" jdbcType="BIGINT" property="workId"/>
         <result column="HOST_NAME" jdbcType="VARCHAR" property="hostName"/>
         <result column="PORT" jdbcType="VARCHAR" property="port"/>
         <result column="TYPE" jdbcType="INTEGER" property="type"/>
@@ -28,8 +29,8 @@
                 #{hostName},
                 #{port},
                 #{type},
-                #{globalToken}
-                    #{launchDate},
+                #{globalToken},
+                #{launchDate},
                 NOW(),
                 NOW())
     </insert>

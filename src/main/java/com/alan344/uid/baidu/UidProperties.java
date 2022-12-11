@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "uid")
-@Configuration(proxyBeanMethods = false)
 public class UidProperties {
     /**
      * Bits allocate
