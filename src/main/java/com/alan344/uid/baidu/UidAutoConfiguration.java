@@ -66,7 +66,7 @@ public class UidAutoConfiguration {
         @Override
         public void customize(org.apache.ibatis.session.Configuration configuration) {
             final ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
-            final Resource resource = resourceResolver.getResource("classpath:mapper/WORKER_NODE.xml");
+            final Resource resource = resourceResolver.getResource("classpath:uidmapper/WORKER_NODE.xml");
             XMLMapperBuilder xmlMapperBuilder;
             try {
                 xmlMapperBuilder = new XMLMapperBuilder(resource.getInputStream(),
