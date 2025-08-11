@@ -37,6 +37,7 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
      * @return assigned worker id
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public long assignWorkerId() {
         final WorkerNodeEntity workerNodeEntity = this.getWorkerNodeEntity();
         LOGGER.info("worker node:" + workerNodeEntity);
@@ -50,16 +51,15 @@ public class DisposableWorkerIdAssigner implements WorkerIdAssigner {
             WorkerNodeEntity workerNodeByGlobalToken = workerNodeDAO.getWorkerNodeByGlobalToken(uidProperties.getGlobalToken());
             if (null != workerNodeByGlobalToken) {
                 workerNodeEntity = workerNodeByGlobalToken;
-
             } else {
                 workerNodeEntity.setGlobalToken(uidProperties.getGlobalToken());
                 this.saveWorkerNode(workerNodeEntity);
             }
         } else {
-            final WorkerNodeEntity workerNodeByHost = workerNodeDAO.getWorkerNodeByHostAndPort(workerNodeEntity.getHostName(), workerNodeEntity.getPort());
+            final WorkerNodeEntity workerNodeByHost = workerNodeDAO.getWorkerNodeByHostAndPort(workerNodeEntity.getHostName(),
+                    workerNodeEntity.getPort());
             if (null != workerNodeByHost) {
                 workerNodeEntity = workerNodeByHost;
-
             } else {
                 this.saveWorkerNode(workerNodeEntity);
             }

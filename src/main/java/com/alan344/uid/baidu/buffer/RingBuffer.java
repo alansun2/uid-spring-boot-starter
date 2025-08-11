@@ -17,8 +17,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <li><b>flags:</b> flag array corresponding the same index with the slots, indicates whether can take or put slot
  * <li><b>tail:</b> a sequence of the max slot position to produce
  * <li><b>cursor:</b> a sequence of the min slot position to consume
- *
- * @author yutianbao
  */
 public class RingBuffer {
     private static final Logger LOGGER = LoggerFactory.getLogger(RingBuffer.class);
@@ -78,7 +76,8 @@ public class RingBuffer {
      * Constructor with buffer size & padding factor
      *
      * @param bufferSize    must be positive & a power of 2
-     * @param paddingFactor percent in (0 - 100). When the count of rest available UIDs reach the threshold, it will trigger padding buffer<br>
+     * @param paddingFactor percent in (0 - 100). When the count of rest available UIDs reach the threshold, it will trigger
+     *                      padding buffer<br>
      *                      Sample: paddingFactor=20, bufferSize=1000 -> threshold=1000 * 20 /100,
      *                      padding buffer will be triggered when tail-cursor<threshold
      */

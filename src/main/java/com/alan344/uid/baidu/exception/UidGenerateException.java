@@ -2,8 +2,6 @@ package com.alan344.uid.baidu.exception;
 
 /**
  * UidGenerateException
- *
- * @author yutianbao
  */
 public class UidGenerateException extends RuntimeException {
 

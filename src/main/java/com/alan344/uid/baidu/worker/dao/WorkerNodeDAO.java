@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * DAO for M_WORKER_NODE
- *
- * @author yutianbao
  */
 public interface WorkerNodeDAO {
 

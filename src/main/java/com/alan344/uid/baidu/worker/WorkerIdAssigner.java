@@ -4,8 +4,6 @@ import com.alan344.uid.baidu.impl.DefaultUidGenerator;
 
 /**
  * Represents a worker id assigner for {@link DefaultUidGenerator}
- *
- * @author yutianbao
  */
 public interface WorkerIdAssigner {
 

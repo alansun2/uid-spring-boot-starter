@@ -16,11 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Represents an executor for padding {@link RingBuffer}<br>
  * There are two kinds of executors: one for scheduled padding, the other for padding immediately.
- *
- * @author yutianbao
  */
 public class BufferPaddingExecutor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RingBuffer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BufferPaddingExecutor.class);
 
     /**
      * Constants
@@ -60,21 +58,11 @@ public class BufferPaddingExecutor {
     private long scheduleInterval = DEFAULT_SCHEDULE_INTERVAL;
 
     /**
-     * Constructor with {@link RingBuffer} and {@link BufferedUidProvider}, default use schedule
-     *
-     * @param ringBuffer  {@link RingBuffer}
-     * @param uidProvider {@link BufferedUidProvider}
-     */
-    public BufferPaddingExecutor(RingBuffer ringBuffer, BufferedUidProvider uidProvider) {
-        this(ringBuffer, uidProvider, true);
-    }
-
-    /**
      * Constructor with {@link RingBuffer}, {@link BufferedUidProvider}, and whether use schedule padding
      *
      * @param ringBuffer    {@link RingBuffer}
      * @param uidProvider   {@link BufferedUidProvider}
-     * @param usingSchedule
+     * @param usingSchedule whether use schedule padding
      */
     public BufferPaddingExecutor(RingBuffer ringBuffer, BufferedUidProvider uidProvider, boolean usingSchedule) {
         this.running = new AtomicBoolean(false);
@@ -99,7 +87,7 @@ public class BufferPaddingExecutor {
      */
     public void start() {
         if (bufferPadSchedule != null) {
-            bufferPadSchedule.scheduleWithFixedDelay(() -> paddingBuffer(), scheduleInterval, scheduleInterval, TimeUnit.SECONDS);
+            bufferPadSchedule.scheduleWithFixedDelay(this::paddingBuffer, scheduleInterval, scheduleInterval, TimeUnit.SECONDS);
         }
     }
 

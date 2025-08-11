@@ -1,14 +1,14 @@
 package com.alan344.uid.baidu;
 
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.Assert;
 
 /**
  * Allocate 64 bits for the UID(long)<br>
  * sign (fixed 1bit) -> deltaSecond -> workerId -> sequence(within the same second)
- *
- * @author yutianbao
  */
+@Getter
 @ToString
 public class BitsAllocator {
     /**
@@ -18,6 +18,8 @@ public class BitsAllocator {
 
     /**
      * Bits for [sign-> second-> workId-> sequence]
+     * -- GETTER --
+     * Getters
      */
     private final int signBits = 1;
     private final int timestampBits;
@@ -74,42 +76,4 @@ public class BitsAllocator {
         return (deltaSeconds << timestampShift) | (workerId << workerIdShift) | sequence;
     }
 
-    /**
-     * Getters
-     */
-    public int getSignBits() {
-        return signBits;
-    }
-
-    public int getTimestampBits() {
-        return timestampBits;
-    }
-
-    public int getWorkerIdBits() {
-        return workerIdBits;
-    }
-
-    public int getSequenceBits() {
-        return sequenceBits;
-    }
-
-    public long getMaxDeltaSeconds() {
-        return maxDeltaSeconds;
-    }
-
-    public long getMaxWorkerId() {
-        return maxWorkerId;
-    }
-
-    public long getMaxSequence() {
-        return maxSequence;
-    }
-
-    public int getTimestampShift() {
-        return timestampShift;
-    }
-
-    public int getWorkerIdShift() {
-        return workerIdShift;
-    }
 }

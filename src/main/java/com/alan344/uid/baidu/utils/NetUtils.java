@@ -7,8 +7,6 @@ import java.util.Enumeration;
 
 /**
  * NetUtils
- *
- * @author yutianbao
  */
 public abstract class NetUtils {
 

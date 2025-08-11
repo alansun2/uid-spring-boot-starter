@@ -1,15 +1,11 @@
 package com.alan344.uid.baidu.worker;
 
-import com.alan344.uid.baidu.utils.ValuedEnum;
-
 /**
  * WorkerNodeType
  * <li>CONTAINER: Such as Docker
  * <li>ACTUAL: Actual machine
- *
- * @author yutianbao
  */
-public enum WorkerNodeType implements ValuedEnum<Integer> {
+public enum WorkerNodeType {
     /**
      * 容i
      */
@@ -27,11 +23,10 @@ public enum WorkerNodeType implements ValuedEnum<Integer> {
     /**
      * Constructor with field of type
      */
-    private WorkerNodeType(Integer type) {
+    WorkerNodeType(Integer type) {
         this.type = type;
     }
 
-    @Override
     public Integer value() {
         return type;
     }

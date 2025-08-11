@@ -13,8 +13,6 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Named thread in ThreadFactory. If there is no specified name for thread, it
  * will auto-detect using the invoker classname instead.
- *
- * @author yutianbao
  */
 public class NamingThreadFactory implements ThreadFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(NamingThreadFactory.class);
@@ -22,33 +20,23 @@ public class NamingThreadFactory implements ThreadFactory {
     /**
      * Thread name pre
      */
-    private String name;
+    private final String name;
     /**
      * Is daemon thread
      */
-    private boolean daemon;
+    private final boolean daemon;
     /**
      * UncaughtExceptionHandler
      */
-    private UncaughtExceptionHandler uncaughtExceptionHandler;
+    private final UncaughtExceptionHandler uncaughtExceptionHandler;
     /**
      * Sequences for multi thread name prefix
      */
     private final ConcurrentHashMap<String, AtomicLong> sequences;
 
-    /**
-     * Constructors
-     */
-    public NamingThreadFactory() {
-        this(null, false, null);
-    }
 
     public NamingThreadFactory(String name) {
         this(name, false, null);
-    }
-
-    public NamingThreadFactory(String name, boolean daemon) {
-        this(name, daemon, null);
     }
 
     public NamingThreadFactory(String name, boolean daemon, UncaughtExceptionHandler handler) {
@@ -75,11 +63,7 @@ public class NamingThreadFactory implements ThreadFactory {
         if (this.uncaughtExceptionHandler != null) {
             thread.setUncaughtExceptionHandler(this.uncaughtExceptionHandler);
         } else {
-            thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-                public void uncaughtException(Thread t, Throwable e) {
-                    LOGGER.error("unhandled exception in thread: " + t.getId() + ":" + t.getName(), e);
-                }
-            });
+            thread.setUncaughtExceptionHandler((t, e) -> LOGGER.error("unhandled exception in thread: " + t.getId() + ":" + t.getName(), e));
         }
 
         return thread;
@@ -118,32 +102,4 @@ public class NamingThreadFactory implements ThreadFactory {
 
         return r.incrementAndGet();
     }
-
-    /**
-     * Getters & Setters
-     */
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isDaemon() {
-        return daemon;
-    }
-
-    public void setDaemon(boolean daemon) {
-        this.daemon = daemon;
-    }
-
-    public UncaughtExceptionHandler getUncaughtExceptionHandler() {
-        return uncaughtExceptionHandler;
-    }
-
-    public void setUncaughtExceptionHandler(UncaughtExceptionHandler handler) {
-        this.uncaughtExceptionHandler = handler;
-    }
-
 }

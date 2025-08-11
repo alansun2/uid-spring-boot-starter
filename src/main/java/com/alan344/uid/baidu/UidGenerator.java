@@ -4,8 +4,6 @@ import com.alan344.uid.baidu.exception.UidGenerateException;
 
 /**
  * Represents a unique id generator.
- *
- * @author yutianbao
  */
 public interface UidGenerator {
 

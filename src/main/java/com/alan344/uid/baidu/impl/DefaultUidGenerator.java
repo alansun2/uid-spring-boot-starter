@@ -39,8 +39,6 @@ import java.util.concurrent.TimeUnit;
  * <li>epochStr: Epoch date string format 'yyyy-MM-dd'. Default as '2016-05-20'<p>
  *
  * <b>Note that:</b> The total bits must be 64 -1
- *
- * @author yutianbao
  */
 public class DefaultUidGenerator implements UidGenerator, InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultUidGenerator.class);

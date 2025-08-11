@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.dreamlu.mica.auto.annotation.AutoIgnore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author AlanSun
- * @date 2022/12/9 14:47
  */
 @AutoIgnore
 @Getter
@@ -18,19 +16,19 @@ public class UidProperties {
     /**
      * Bits allocate
      */
-    private int timeBits = 28;
+    private int timeBits = 41;
     /**
      * workId Bits allocate
      */
-    private int workerBits = 22;
+    private int workerBits = 10;
     /**
      * seq Bits allocate
      */
-    private int seqBits = 13;
+    private int seqBits = 12;
     /**
      * Customer epoch, unit as second. For example 2016-05-20 (ms: 1463673600000)
      */
-    private String epochStr = "2022-12-01";
+    private String epochStr = "2025-08-11";
     /**
      * 相同的 globalToken 会返回同一个 workId
      * <p>
